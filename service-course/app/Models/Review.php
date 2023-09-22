@@ -9,13 +9,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Review extends Model
 {
     use HasFactory;
-    protected $table = 'reviews';
+    protected $table = 'review';
 
     protected $fillable = [
         'user_id', 'course_id', 'rating', 'note'
     ];
 
-    
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d H:m:s',
+        'updated_at' => 'datetime:Y-m-d H:m:s',
+    ];
     public function course()
     {
         return $this->belongsTo(Course::class);
