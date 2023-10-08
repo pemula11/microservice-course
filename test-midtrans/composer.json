@@ -1,0 +1,17 @@
+{
+    "name": "enigma/test-midtrans",
+    "autoload": {
+        "psr-4": {
+            "Enigma\\TestMidtrans\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "pemula11",
+            "email": "andriaditya311@gmail.com"
+        }
+    ],
+    "require": {
+        "midtrans/midtrans-php": "^2.5"
+    }
+}
