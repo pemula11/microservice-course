@@ -3,8 +3,8 @@
 use Illuminate\Support\Facades\Http;
 
 function createPremiumAccess($data){
-    $url = env('SERVICE_COURSE_URL').'api/my-courses/premium';
-
+    $url = env('SERVICE_COURSE_URL').'api/mycourses/premium';
+    
     
     try {
         $response = Http::post($url, $data);

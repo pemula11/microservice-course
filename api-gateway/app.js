@@ -8,8 +8,7 @@ const logger = require('morgan');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const coursesRouter = require('./routes/courses');
-const ordersRouter = require('./routes/orders');
-const paymentsRouter = require('./routes/payments');
+const orderPaymentRouter = require('./routes/orderPayment');
 const mediaRouter = require('./routes/media');
 const refreshTokensRouter = require('./routes/refreshTokens');
 const mentorsRouter = require('./routes/mentors');
@@ -18,8 +17,10 @@ const lessonsRouter = require('./routes/lessons');
 const imageCoursesRouter = require('./routes/imageCourses');
 const mycourseRouter = require('./routes/myCourses');
 const reviewsRouter = require('./routes/reviews');
+const webhookRouter = require('./routes/webhook');
 
 const verifyToken = require('./middleware/verifyToken')
+const can = require('./middleware/permission');
 
 const app = express();
 
@@ -32,15 +33,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/courses', coursesRouter);
-app.use('/media', mediaRouter);
-app.use('/orders', ordersRouter);
-app.use('/payments', paymentsRouter);
+app.use('/media', verifyToken, can('admin', 'student'), mediaRouter);
+app.use('/orders', verifyToken, can('admin', 'student'), orderPaymentRouter);
 app.use('/refresh-tokens', refreshTokensRouter);
-app.use('/mentors', verifyToken, mentorsRouter);
-app.use('/chapters',  verifyToken, chaptersRouter);
-app.use('/lessons', verifyToken, lessonsRouter);
-app.use('/image-courses', verifyToken, imageCoursesRouter);
-app.use('/my-courses', verifyToken, mycourseRouter);
-app.use('/reviews', verifyToken, reviewsRouter);
+app.use('/mentors', verifyToken, can('admin'), mentorsRouter);
+app.use('/chapters',  verifyToken, can('admin'), chaptersRouter);
+app.use('/lessons', verifyToken, can('admin'), lessonsRouter);
+app.use('/image-courses', verifyToken, can('admin'), imageCoursesRouter);
+app.use('/my-courses', verifyToken, can('admin', 'student'), mycourseRouter);
+app.use('/reviews', can('admin', 'student'), reviewsRouter);
+app.use('/webhook', webhookRouter);
 
 module.exports = app;
